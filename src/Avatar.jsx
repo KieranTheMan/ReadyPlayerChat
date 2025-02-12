@@ -41,6 +41,8 @@ export default function AvatarScene() {
         //if avatar model isn't rendered yet, it defaults to a fixed point of 0,1,0, this stops any camera related focus errors
         target={avatarRef.current ? avatarRef.current.position : [0, 1, 0]}
         enablePan={false}
+        enableZoom={false}
+        rotateSpeed={0.1}
       />
     </Canvas>
   );
