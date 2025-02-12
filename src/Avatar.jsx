@@ -34,6 +34,11 @@ export default function AvatarScene() {
       />
       ; /* OrbitControls: Allow user to interact with camera */
       <OrbitControls
+      // Lock vertical rotation
+        minPolarAngle={Math.PI / 2.5} 
+        maxPolarAngle={Math.PI / 2.5}
+        //Check to see if avatar model is available the sets the position as its focus
+        //if avatar model isn't rendered yet, it defaults to a fixed point of 0,1,0, this stops any camera related focus errors
         target={avatarRef.current ? avatarRef.current.position : [0, 1, 0]}
         enablePan={false}
       />
