@@ -1,14 +1,13 @@
-import AvatarScene from "./Avatar"
-
+import { Experience } from "./Experience";
+import { Canvas } from "@react-three/fiber";
 function App() {
-
   return (
     <>
-      <div>
-       <AvatarScene/>
-      </div>
+      <Canvas style={{ width: "100vw", height: "100vh" }}>
+        <Experience />
+      </Canvas>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
