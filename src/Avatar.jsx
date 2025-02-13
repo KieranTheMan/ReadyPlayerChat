@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { useFBX, useGLTF } from '@react-three/drei'
+import React, { useEffect, useRef, useState } from 'react'
+import { useFBX, useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Avatar(props) {
   const { nodes, materials } = useGLTF('/models/67aa505799f23ddeb5c5c6c1.glb');
@@ -9,14 +9,41 @@ export default function Avatar(props) {
 
 
 console.log(IdleAnimation)
-IdleAnimation[0].name = Idle;
-DanceAnimation[0].name = Dance;
-GreetingAnimation[0].name =Greeting;
+IdleAnimation[0].name = 'Idle';
+DanceAnimation[0].name = 'Dance';
+GreetingAnimation[0].name ='Greeting';
 
-const [animation, setAnimation] = useState('Idle');
+const [animation, setAnimation] = useState('Dance');
 
-useAnimation([IdleAnimation[0], DanceAnimation[0], GreetingAnimation[0]] )
+const avatarGroupRef = useRef()
+const { actions } = useAnimations([IdleAnimation[0], DanceAnimation[0], GreetingAnimation[0]], avatarGroupRef )
 
+console.log("Animation:", IdleAnimation[0]);
+
+useEffect(() => {
+  console.log("Available actions:", actions);
+  console.log("Selected animation:", animation);
+  console.log("Action Object:", actions[animation]);
+
+  //Check the actions object and animation is properly loaded before trying to use it, Stops Errors.
+  if (!actions || Object.keys(actions).length === 0) {
+    console.warn("Actions are still loading...");
+    return;
+  }
+
+  if (actions[animation]) {
+    actions[animation].reset().fadeIn(0.5).play();
+  } else {
+    console.warn(`Animation "${animation}" not found`);
+  }
+
+  return () => {
+    if (actions[animation]) {
+      actions[animation].fadeOut(0.5);
+    }
+  };
+
+},[actions, animation])
 
 
 
@@ -26,7 +53,7 @@ useAnimation([IdleAnimation[0], DanceAnimation[0], GreetingAnimation[0]] )
 
 
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} ref ={avatarGroupRef}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
         name="EyeLeft"
