@@ -8,6 +8,14 @@ export default function Avatar(props) {
   const { animations: GreetingAnimation } = useFBX('animations/Salute.fbx');
 
 
+console.log(IdleAnimation)
+IdleAnimation[0].name = Idle;
+DanceAnimation[0].name = Dance;
+GreetingAnimation[0].name =Greeting;
+
+const [animation, setAnimation] = useState('Idle');
+
+useAnimation([IdleAnimation[0], DanceAnimation[0], GreetingAnimation[0]] )
 
 
 
