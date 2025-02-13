@@ -1,57 +1,71 @@
-import { useGLTF, OrbitControls, PerspectiveCamera} from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import React, { useRef } from 'react'
+import { useGLTF } from '@react-three/drei'
 
-export default function Avatar() {
-  return (
-    <Canvas style={{ width: "100vw", height: "100vh" }}>
-      <AvatarScene/>
-    </Canvas>
-  );
-}
-
-function AvatarScene() {
-  const { scene: avatar } = useGLTF(
-    "https://models.readyplayer.me/67aa505799f23ddeb5c5c6c1.glb"
-  );
-
-  const avatarRef = useRef();
-  const [cameraPosition, setCameraPosition] = useState([0, 1, 5]);
-
-  useEffect(() => {
-    // Adjust and set the camera position on render
-    setCameraPosition([0, -6, 0]);
-  }, []);
+export default function Avatar(props) {
+  const { nodes, materials } = useGLTF('/models/67aa505799f23ddeb5c5c6c1.glb');
 
   return (
-    <>
-      {/* Perspective Camera */}
-      <PerspectiveCamera
-        makeDefault
-        position={cameraPosition}
-        fov={20}
-        near={0.1}
-        far={1000}
+    <group {...props} dispose={null}>
+      <primitive object={nodes.Hips} />
+      <skinnedMesh
+        name="EyeLeft"
+        geometry={nodes.EyeLeft.geometry}
+        material={materials.Wolf3D_Eye}
+        skeleton={nodes.EyeLeft.skeleton}
+        morphTargetDictionary={nodes.EyeLeft.morphTargetDictionary}
+        morphTargetInfluences={nodes.EyeLeft.morphTargetInfluences}
       />
-      <ambientLight intensity={2} />
-      <directionalLight intensity={3} position={[2, 2, 2]} />
-
-      <primitive
-        ref={avatarRef}
-        object={avatar}
-        position={[0, -8.2, 0]}
-        scale={5}
+      <skinnedMesh
+        name="EyeRight"
+        geometry={nodes.EyeRight.geometry}
+        material={materials.Wolf3D_Eye}
+        skeleton={nodes.EyeRight.skeleton}
+        morphTargetDictionary={nodes.EyeRight.morphTargetDictionary}
+        morphTargetInfluences={nodes.EyeRight.morphTargetInfluences}
       />
-
-      {/* Allow user to interact with the scene */}
-      <OrbitControls 
-      // Lock vertical rotation
-      minPolarAngle={Math.PI / 2.5} 
-      maxPolarAngle={Math.PI / 2.5}
-      enablePan={false}
-      enableZoom={false}
-      rotateSpeed={0.1}
+      <skinnedMesh
+        name="Wolf3D_Head"
+        geometry={nodes.Wolf3D_Head.geometry}
+        material={materials.Wolf3D_Skin}
+        skeleton={nodes.Wolf3D_Head.skeleton}
+        morphTargetDictionary={nodes.Wolf3D_Head.morphTargetDictionary}
+        morphTargetInfluences={nodes.Wolf3D_Head.morphTargetInfluences}
       />
-    </>
-  );
+      <skinnedMesh
+        name="Wolf3D_Teeth"
+        geometry={nodes.Wolf3D_Teeth.geometry}
+        material={materials.Wolf3D_Teeth}
+        skeleton={nodes.Wolf3D_Teeth.skeleton}
+        morphTargetDictionary={nodes.Wolf3D_Teeth.morphTargetDictionary}
+        morphTargetInfluences={nodes.Wolf3D_Teeth.morphTargetInfluences}
+      />
+      <skinnedMesh
+        geometry={nodes.Wolf3D_Hair.geometry}
+        material={materials.Wolf3D_Hair}
+        skeleton={nodes.Wolf3D_Hair.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.Wolf3D_Body.geometry}
+        material={materials.Wolf3D_Body}
+        skeleton={nodes.Wolf3D_Body.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.Wolf3D_Outfit_Bottom.geometry}
+        material={materials.Wolf3D_Outfit_Bottom}
+        skeleton={nodes.Wolf3D_Outfit_Bottom.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.Wolf3D_Outfit_Footwear.geometry}
+        material={materials.Wolf3D_Outfit_Footwear}
+        skeleton={nodes.Wolf3D_Outfit_Footwear.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.Wolf3D_Outfit_Top.geometry}
+        material={materials.Wolf3D_Outfit_Top}
+        skeleton={nodes.Wolf3D_Outfit_Top.skeleton}
+      />
+    </group>
+  )
 }
+
+useGLTF.preload('/67aa505799f23ddeb5c5c6c1.glb')
