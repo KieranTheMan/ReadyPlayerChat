@@ -1,8 +1,21 @@
 import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useFBX, useGLTF } from '@react-three/drei'
 
 export default function Avatar(props) {
   const { nodes, materials } = useGLTF('/models/67aa505799f23ddeb5c5c6c1.glb');
+  const { animations: IdleAnimation } = useFBX('animations/BreathingIdle.fbx');
+  const { animations: DanceAnimation } = useFBX('animations/HipHopDancing.fbx');
+  const { animations: GreetingAnimation } = useFBX('animations/Salute.fbx');
+
+
+
+
+
+
+
+
+
+
 
   return (
     <group {...props} dispose={null}>
